@@ -5,15 +5,18 @@ import {mongooseConnect} from "@/lib/mongoose";
 import NewProducts from "@/components/NewProducts";
 import { useContext } from "react";
 import UserContext from "@/components/UserContext";
-import { useRouter } from "next/router";
 
 export default function HomePage({featuredProduct,newProducts}) {
   const {user} = useContext(UserContext);
-  const router = useRouter();
-  // console.log(window.localStorage,"userhome");
 
-  if(user === null){
-  router.push("/login")
+  if (user === null) {
+    // You can return a redirect object directly in getServerSideProps
+    return {
+      redirect: {
+        destination: "/login",
+        permanent: false, // Set this to true if the redirect is permanent
+      },
+    };
   }else{
   return (
     <div>
