@@ -21,6 +21,7 @@
     "react-dom": "18.2.0",
     "react-helmet": "^6.1.0",
     "stripe": "^12.10.0",
-    "styled-components": "^6.0.0-rc.5"
+    "styled-components": "^6.0.0-rc.5",
+    "uuid": "^9.0.0"
   }
 }

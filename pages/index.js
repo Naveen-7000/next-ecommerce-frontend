@@ -5,18 +5,15 @@ import {mongooseConnect} from "@/lib/mongoose";
 import NewProducts from "@/components/NewProducts";
 import { useContext } from "react";
 import UserContext from "@/components/UserContext";
-import LoginPage from "@/components/Login";
+import { useRouter } from "next/router";
 
 export default function HomePage({featuredProduct,newProducts}) {
   const {user} = useContext(UserContext);
-  console.log(user,"userhome");
+  const router = useRouter();
+  // console.log(window.localStorage,"userhome");
 
   if(user === null){
-  return(
-   <div>
-    <LoginPage />
-   </div>
-  )
+  router.push("/login")
   }else{
   return (
     <div>

@@ -6,7 +6,7 @@ import {useContext} from "react";
 import {CartContext} from "@/components/CartContext";
 
 const ProductWrapper = styled.div`
-  
+  margin-bottom:10px ;
 `;
 
 const WhiteBox = styled(Link)`
@@ -69,7 +69,7 @@ export default function ProductBox({_id,title,description,price,images}) {
         </div>
       </WhiteBox>
       <ProductInfoBox>
-        <Title href={url}>{title}</Title>
+        <Title href={url}>{title.length > 21 ? title.slice(0,21) : title}</Title>
         <PriceRow>
           <Price>
            ₹{price}

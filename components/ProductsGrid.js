@@ -13,9 +13,13 @@ const StyledProductsGrid = styled.div`
 export default function ProductsGrid({products}) {
   return (
     <StyledProductsGrid>
-      {products?.length > 0 && products.map(product => (
+      {products?.length > 0 ? products.map(product => (
         <ProductBox key={product._id} {...product} />
-      ))}
+      ))
+      : (
+        <p>No products found</p>
+      )
+    }
     </StyledProductsGrid>
   );
 }

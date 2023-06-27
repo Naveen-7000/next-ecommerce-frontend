@@ -1,7 +1,7 @@
 import styled from "styled-components";
 import { useState } from "react";
 import axios from "axios";
-import UserContext from "./UserContext";
+import UserContext from "../components/UserContext";
 import { useContext } from "react";
 import { useRouter } from "next/router";
 const LoginPage = () => {
