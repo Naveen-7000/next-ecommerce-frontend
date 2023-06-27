@@ -13,6 +13,7 @@ const LoginPage = () => {
   const [pinCode,setPinCode] = useState('');
   const [country,setCountry] = useState('');
   const [password,setPassword] = useState('');
+  const [loading,setLoading] = useState(false);
   const router = useRouter();
 
 
@@ -27,22 +28,26 @@ const LoginPage = () => {
 
   const handleRegister = async(e) => {
     e.preventDefault();
+    setLoading(true);
     const address = {city,pincode:pinCode,country};
     const data = {name,email,address,password};
     const res = await axios.post("/api/auth/register",data);
     setUser(res?.data?.newUser);
     setIsRegister(false);
     clearState();
+    setLoading(false);
     router.push("/");
   };
 
   const handleLogin = async(e) => {
     e.preventDefault();
+    setLoading(true);
     const data = {email,password};
     const res = await axios.post('/api/auth/login',data);
     console.log(res.data,"login");
     setUser(res.data?.user);
     clearState();
+    setLoading(false);
     router.push("/");
   }
 
@@ -62,7 +67,9 @@ const LoginPage = () => {
             <Label>Password</Label>
             <Input type="password" value={password} onChange={(e)=>setPassword(e.target.value)} />
           </FormGroup>
-          <Button type="submit">Login</Button>
+          {
+            loading ? <Button disabled>Loading...</Button> : <Button type="submit">Login</Button>
+          }
           <Button onClick={()=>setIsRegister(true)} >Dont have account</Button>
           </Form>
            </>
@@ -93,7 +100,9 @@ const LoginPage = () => {
             <Label>Password</Label>
             <Input type="password" value={password} onChange={(e)=>setPassword(e.target.value)} />
           </FormGroup>
-          <Button type="submit">Register</Button>
+          {
+            loading ? <Button disabled>Loading...</Button> : <Button type="submit">Register</Button>
+          }
           <Button onClick={()=>setIsRegister(false)} >Already have account</Button>
           </Form>
           </>
