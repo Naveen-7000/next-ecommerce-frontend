@@ -1,5 +1,9 @@
 # Ecommerce Project
 This is an ecommerce project built with Next.js, MongoDB, and React. It provides a platform for selling and purchasing products online.
+<img width="817" alt="ecommerce" src="https://github.com/Naveen-7000/next-ecommerce-frontend/assets/79650422/23342631-1081-4283-ba39-9c99a62005ec">
+<img width="659" alt="ecommerce-1" src="https://github.com/Naveen-7000/next-ecommerce-frontend/assets/79650422/58637001-fabb-4631-8268-a7801f4fd6ce">
+<img width="659" alt="ecommerce-2" src="https://github.com/Naveen-7000/next-ecommerce-frontend/assets/79650422/531dc53c-2636-4ed3-b1af-0bc9e5a66b99">
+
 
 ## Features
 - User authentication (signup, login, logout)
