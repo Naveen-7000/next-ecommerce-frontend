@@ -4,19 +4,11 @@ import Center from "@/components/Center";
 import Title from "@/components/Title";
 import CategoryGrid from "@/components/CategoryGrid";
 import { v4 as uuidv4 } from 'uuid';
-import { useState,useEffect } from "react";
+import { mongooseConnect } from "@/lib/mongoose";
+import { Category } from "@/models/Category";
+import { Product } from "@/models/Product";
 
-const Categories = () => {
-  const [category,setCategory] = useState([]);
-  const [commonProduct,setCommonProduct] = useState([]);
-
-  useEffect(()=>{
-    (async()=>{
-      const {category,commonProduct} = await fetch('/api/category').then(res=>res.json());
-      setCategory(category);
-      setCommonProduct(commonProduct);
-    })()
-  },[]);
+const Categories = ({category,commonProduct}) => {
 
   console.log(category,"category",commonProduct,"commonProduct");
 
@@ -40,5 +32,52 @@ const Categories = () => {
     </>
   );
 };
+
+export async function getServerSideProps() {
+  await mongooseConnect();
+  const category = await Category.find({ parent: { $exists: false } }, null, {
+    sort: { _id: 1 },
+  });
+  const commonProduct = await Product.aggregate([
+    {
+      $lookup: {
+        from: "categories",
+        localField: "category",
+        foreignField: "_id",
+        as: "categoryData",
+      },
+    },
+    {
+      $unwind: "$categoryData",
+    },
+    {
+      $lookup: {
+        from: "categories",
+        localField: "categoryData.parent",
+        foreignField: "_id",
+        as: "parentCategoryData",
+      },
+    },
+    {
+      $match: {
+        $or: [
+          { category: { $exists: true } },
+          { "categoryData.parent": { $exists: true } },
+          { "parentCategoryData._id": { $exists: true } },
+        ],
+        _id: { $exists: true }, // Added condition for _id field
+      },
+    },
+  ]);
+
+  return {
+    props: {
+      category: JSON.parse(JSON.stringify(category)),
+      commonProduct: JSON.parse(JSON.stringify(commonProduct)),
+    },
+  }
+
+}
+
 
 export default Categories;
