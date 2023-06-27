@@ -34,7 +34,7 @@ To get a local copy of the project up and running, follow these steps:
 # Prerequisites
 - Node.js (v14 or above)
 - MongoDB database
-To install and run the Realtime Code Editor locally, follow these steps:
+To install and run the Ecommerce locally, follow these steps:
 1. Clone the repository: `git clone https://github.com/Naveen-7000/next-ecommerce-frontend`
 2. Navigate to the project directory: `cd next-ecommerce-frontend`
 3. Install dependencies: `npm install`
