@@ -1,11 +1,19 @@
 import Header from "@/components/Header";
 import Center from "@/components/Center";
-import {mongooseConnect} from "@/lib/mongoose";
-import {Product} from "@/models/Product";
 import ProductsGrid from "@/components/ProductsGrid";
 import Title from "@/components/Title";
+import { useState,useEffect } from "react";
 
-export default function ProductsPage({products}) {
+export default function ProductsPage() {
+  const [products,setProducts] = useState([]);
+  useEffect(() => {
+    (async()=>{
+      const {products} = await fetch('/api/product').then(res=>res.json());
+      setProducts(products);
+    })()
+  }, []);
+
+  console.log(products,"product page");
   return (
     <>
       <Header />
@@ -17,12 +25,3 @@ export default function ProductsPage({products}) {
   );
 }
 
-export async function getServerSideProps() {
-  await mongooseConnect();
-  const products = await Product.find({}, null, {sort:{'_id':-1}});
-  return {
-    props:{
-      products: JSON.parse(JSON.stringify(products)),
-    }
-  };
-}

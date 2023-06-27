@@ -16,6 +16,8 @@ const StyledCategoryGrid = styled.div`
 
 export default function CategoryGrid({category,products}) {
 
+  console.log(products,"products");
+
   const filteredProducts = products?.filter((product) => {
     return (
       product?.category === category ||
@@ -25,9 +27,9 @@ export default function CategoryGrid({category,products}) {
     });
 
     let productToShow;
-    if(filteredProducts.length > 2){
+    if(filteredProducts?.length > 2){
       productToShow = filteredProducts.slice(0,3);
-    }else if(filteredProducts.length > 1){
+    }else if(filteredProducts?.length > 1){
       productToShow = filteredProducts.slice(0,2);
     }else{
       productToShow = filteredProducts[0];

@@ -2,13 +2,24 @@ import React from "react";
 import Header from "@/components/Header";
 import Center from "@/components/Center";
 import Title from "@/components/Title";
-import { mongooseConnect } from "@/lib/mongoose";
 import CategoryGrid from "@/components/CategoryGrid";
-import { Category } from "@/models/Category";
-import { Product } from "@/models/Product";
 import { v4 as uuidv4 } from 'uuid';
+import { useState,useEffect } from "react";
 
-const Categories = ({ category, commonProducts }) => {
+const Categories = () => {
+  const [category,setCategory] = useState([]);
+  const [commonProduct,setCommonProduct] = useState([]);
+
+  useEffect(()=>{
+    (async()=>{
+      const {category,commonProduct} = await fetch('/api/category').then(res=>res.json());
+      setCategory(category);
+      setCommonProduct(commonProduct);
+    })()
+  },[]);
+
+  console.log(category,"category",commonProduct,"commonProduct");
+
   return (
     <>
       <Header />
@@ -19,7 +30,7 @@ const Categories = ({ category, commonProducts }) => {
               <React.Fragment key={uuidv4()}>
                 <Title >{categoryItem.name}</Title>
                 <CategoryGrid
-                  products={commonProducts}
+                  products={commonProduct}
                   category={categoryItem._id}
                 />
               </React.Fragment>
@@ -29,50 +40,5 @@ const Categories = ({ category, commonProducts }) => {
     </>
   );
 };
-
-export async function getServerSideProps() {
-  await mongooseConnect();
-  const category = await Category.find({ parent: { $exists: false } }, null, {
-    sort: { _id: 1 },
-  });
-  const commonProduct = await Product.aggregate([
-    {
-      $lookup: {
-        from: "categories",
-        localField: "category",
-        foreignField: "_id",
-        as: "categoryData",
-      },
-    },
-    {
-      $unwind: "$categoryData",
-    },
-    {
-      $lookup: {
-        from: "categories",
-        localField: "categoryData.parent",
-        foreignField: "_id",
-        as: "parentCategoryData",
-      },
-    },
-    {
-      $match: {
-        $or: [
-          { category: { $exists: true } },
-          { "categoryData.parent": { $exists: true } },
-          { "parentCategoryData._id": { $exists: true } },
-        ],
-        _id: { $exists: true }, // Added condition for _id field
-      },
-    },
-  ]);
-
-  return {
-    props: {
-      category: JSON.parse(JSON.stringify(category)),
-      commonProducts: JSON.parse(JSON.stringify(commonProduct)),
-    },
-  };
-}
 
 export default Categories;

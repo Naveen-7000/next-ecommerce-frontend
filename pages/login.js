@@ -33,6 +33,7 @@ const LoginPage = () => {
     setUser(res?.data?.newUser);
     setIsRegister(false);
     clearState();
+    router.push("/");
   };
 
   const handleLogin = async(e) => {
@@ -42,10 +43,9 @@ const LoginPage = () => {
     console.log(res.data,"login");
     setUser(res.data?.user);
     clearState();
-    // router.push("/");
+    router.push("/");
   }
 
-  console.log(user,"user");
   return (
     <Container>
       <FormContainer>
