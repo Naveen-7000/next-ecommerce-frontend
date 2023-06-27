@@ -1,22 +1,24 @@
-import Header from "@/components/Header";
+import { useContext, useEffect, useState } from "react";
+import { useRouter } from "next/router";
+import axios from "axios";
 import styled from "styled-components";
+
+import Header from "@/components/Header";
 import Center from "@/components/Center";
 import Button from "@/components/Button";
-import { useContext, useEffect, useState } from "react";
-import { CartContext } from "@/components/CartContext";
-import axios from "axios";
 import Table from "@/components/Table";
 import Input from "@/components/Input";
-import { useRouter } from "next/router";
+import { CartContext } from "@/components/CartContext";
 
 const ColumnsWrapper = styled.div`
   display: grid;
   grid-template-columns: 1fr;
+  gap: 40px;
+  margin-top: 40px;
+  
   @media screen and (min-width: 768px) {
     grid-template-columns: 1.2fr 0.8fr;
   }
-  gap: 40px;
-  margin-top: 40px;
 `;
 
 const Box = styled.div`
@@ -38,14 +40,17 @@ const ProductImageBox = styled.div`
   align-items: center;
   justify-content: center;
   border-radius: 10px;
+
   img {
     max-width: 60px;
     max-height: 60px;
   }
+  
   @media screen and (min-width: 768px) {
     padding: 10px;
     width: 100px;
     height: 100px;
+    
     img {
       max-width: 80px;
       max-height: 80px;
@@ -56,6 +61,7 @@ const ProductImageBox = styled.div`
 const QuantityLabel = styled.span`
   padding: 0 15px;
   display: block;
+  
   @media screen and (min-width: 768px) {
     display: inline-block;
     padding: 0 10px;
@@ -68,8 +74,7 @@ const CityHolder = styled.div`
 `;
 
 export default function CartPage() {
-  const { cartProducts, addProduct, removeProduct, clearCart } =
-    useContext(CartContext);
+  const { cartProducts, addProduct, removeProduct, clearCart } = useContext(CartContext);
   const [products, setProducts] = useState([]);
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
@@ -80,66 +85,82 @@ export default function CartPage() {
   const [isSuccess, setIsSuccess] = useState(false);
   const [fieldsRequired, setFieldsRequired] = useState(false);
   const router = useRouter();
+
+  // console.log(router.query.success,"checkout");
+
   useEffect(() => {
-    if (cartProducts.length > 0) {
-      axios.post("/api/cart", { ids: cartProducts }).then((response) => {
-        setProducts(response.data);
-      });
+    if (cartProducts?.length > 0) {
+      axios.post("/api/cart", { ids: cartProducts })
+        .then((response) => {
+          setProducts(response.data);
+        })
+        .catch((error) => {
+          console.error("Failed to fetch cart products:", error);
+        });
     } else {
       setProducts([]);
     }
   }, [cartProducts]);
+
+  // if url contains success = 1 then i want to clearCart and setIsSuccess to true
   useEffect(() => {
-    if (typeof window === "undefined") {
-      return;
-    }
-    if (window?.location.href.includes("success")) {
+    if (router.query.success === "1") {
       setIsSuccess(true);
       clearCart();
     }
-  }, []);
-  useEffect(() => {
-    if (fieldsRequired) {
-      const timeout = setTimeout(() => {
-        setFieldsRequired(false);
-      }, 3000); // 3 seconds
+  }, [router.query.success]);
 
-      return () => clearTimeout(timeout);
-    }
-  }, [fieldsRequired]);
-  function moreOfThisProduct(id) {
+  const moreOfThisProduct = (id) => {
     addProduct(id);
-  }
-  function lessOfThisProduct(id) {
+  };
+
+  const lessOfThisProduct = (id) => {
     removeProduct(id);
-  }
-  async function goToPayment() {
+  };
+
+  const goToPayment = async () => {
     // Validate if all required fields are filled
     if (!name || !email || !city || !postalCode || !streetAddress || !country) {
       setFieldsRequired(true);
       return;
     }
-    const response = await axios.post("/api/checkout", {
-      name,
-      email,
-      city,
-      postalCode,
-      streetAddress,
-      country,
-      cartProducts,
-    });
-    if (response.data.url) {
-      window.location = response.data.url;
+    setFieldsRequired(false);
+
+    try {
+      const response = await axios.post("/api/checkout", {
+        name,
+        email,
+        city,
+        postalCode,
+        streetAddress,
+        country,
+        cartProducts,
+      });
+      
+      if (response.data.url) {
+        window.location = response.data.url;
+      }
+    } catch (error) {
+      console.error("Failed to submit checkout:", error);
     }
-  }
-  let total = 0;
-  for (const productId of cartProducts) {
-    const price = products.find((p) => p._id === productId)?.price || 0;
-    total += price;
-  }
+  };
+
+  const calculateTotalPrice = () => {
+    let total = 0;
+    
+    for (const productId of cartProducts) {
+      const price = products.find((p) => p._id === productId)?.price || 0;
+      total += price;
+    }
+    
+    return total;
+  };
+
+  const handleRedirect = () => {
+    router.push("/");
+  };
 
   if (isSuccess) {
-    clearCart();
     return (
       <>
         <Header />
@@ -148,7 +169,7 @@ export default function CartPage() {
             <Box>
               <h1>Thanks for your order!</h1>
               <p>We will email you when your order will be sent.</p>
-              <Button onClick={() => router.push("/")}>
+              <Button onClick={handleRedirect}>
                 Go back to home page
               </Button>
             </Box>
@@ -157,6 +178,7 @@ export default function CartPage() {
       </>
     );
   }
+
   return (
     <>
       <Header />
@@ -188,10 +210,7 @@ export default function CartPage() {
                           -
                         </Button>
                         <QuantityLabel>
-                          {
-                            cartProducts.filter((id) => id === product._id)
-                              .length
-                          }
+                          {cartProducts.filter((id) => id === product._id).length}
                         </QuantityLabel>
                         <Button onClick={() => moreOfThisProduct(product._id)}>
                           +
@@ -199,15 +218,14 @@ export default function CartPage() {
                       </td>
                       <td>
                         ₹
-                        {cartProducts.filter((id) => id === product._id)
-                          .length * product.price}
+                        {cartProducts.filter((id) => id === product._id).length * product.price}
                       </td>
                     </tr>
                   ))}
                   <tr>
                     <td></td>
                     <td></td>
-                    <td> ₹{total}</td>
+                    <td>₹{calculateTotalPrice()}</td>
                   </tr>
                 </tbody>
               </Table>
@@ -260,17 +278,12 @@ export default function CartPage() {
                 name="country"
                 onChange={(ev) => setCountry(ev.target.value)}
               />
-              <p
-                style={{
-                  color: "red",
-                  display: fieldsRequired ? "block" :"none",
-                  fontSize:14,
-                  fontWeight:600
-                }}
-              >
-                Fill all the fields !
-              </p>
-              <Button black block onClick={goToPayment}>
+              {fieldsRequired && (
+                <p style={{ color: "red", fontSize: 14, fontWeight: 600 }}>
+                  Fill all the fields!
+                </p>
+              )}
+              <Button black="true" block="true" onClick={goToPayment}>
                 Continue to payment
               </Button>
             </Box>
