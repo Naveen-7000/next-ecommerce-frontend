@@ -86,7 +86,6 @@ export default function CartPage() {
   const [fieldsRequired, setFieldsRequired] = useState(false);
   const router = useRouter();
 
-  // console.log(router.query.success,"checkout");
 
   useEffect(() => {
     if (cartProducts?.length > 0) {

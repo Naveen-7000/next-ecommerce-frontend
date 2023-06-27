@@ -14,6 +14,7 @@ const LoginPage = () => {
   const [country,setCountry] = useState('');
   const [password,setPassword] = useState('');
   const [loading,setLoading] = useState(false);
+  const [fieldsRequired,setFieldsRequired] = useState(false);
   const router = useRouter();
 
 
@@ -29,6 +30,11 @@ const LoginPage = () => {
   const handleRegister = async(e) => {
     e.preventDefault();
     setLoading(true);
+    if(name==='' || email==='' || city==='' || pinCode==='' || country==='' || password===''){
+          setLoading(false);
+          setFieldsRequired(true);
+          return;
+        }
     const address = {city,pincode:pinCode,country};
     const data = {name,email,address,password};
     const res = await axios.post("/api/auth/register",data);
@@ -42,6 +48,12 @@ const LoginPage = () => {
   const handleLogin = async(e) => {
     e.preventDefault();
     setLoading(true);
+   if( email==='' || password===''){
+    setLoading(false);
+    setFieldsRequired(true);
+    return;
+  }
+  setFieldsRequired(false);
     const data = {email,password};
     const res = await axios.post('/api/auth/login',data);
     setUser(res.data?.user);
@@ -66,6 +78,9 @@ const LoginPage = () => {
             <Label>Password</Label>
             <Input type="password" value={password} onChange={(e)=>setPassword(e.target.value)} />
           </FormGroup>
+          {
+            fieldsRequired && <p style={{color:"red", marginTop:-10}}>All fields are required</p>
+          }
           {
             loading ? <Button disabled>Loading...</Button> : <Button type="submit">Login</Button>
           }
