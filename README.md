@@ -1,6 +1,10 @@
 # Ecommerce Project
-This is an ecommerce project built with Next.js, MongoDB, and React. It provides a platform for selling and purchasing products online.
+This is an e-commerce project built with Next.js, MongoDB, and React. It provides a platform for selling and purchasing products online.
 You can find the Live Demo at - [https://next-ecommerce-frontend-neon.vercel.app/](https://shorturl.at/cezM8)
+User Details : 
+-username - navinbhusare97n@gmail.com
+-password - 8827846437Nb@
+
 
 <img width="817" alt="ecommerce" src="https://github.com/Naveen-7000/next-ecommerce-frontend/assets/79650422/23342631-1081-4283-ba39-9c99a62005ec">
 <img width="659" alt="ecommerce-1" src="https://github.com/Naveen-7000/next-ecommerce-frontend/assets/79650422/58637001-fabb-4631-8268-a7801f4fd6ce">
