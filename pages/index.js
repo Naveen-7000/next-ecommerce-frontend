@@ -8,25 +8,7 @@ import { mongooseConnect } from "@/lib/mongoose";
 import LoginPage from "./login";
 
 export default function HomePage({featuredProduct, newProducts}) {
-  // const [featuredProduct, setFeaturedProduct] = useState(null);
-  // const [newProducts, setNewProducts] = useState([]);
-  // const router = useRouter();
   const {user} = useContext(UserContext);
-
-  // useEffect(() => {
-  //  (async()=>{
-  //   const {featuredProduct, newProducts} = await fetch('/api/product').then(res=>res.json());
-  //   setFeaturedProduct(featuredProduct);
-  //   setNewProducts(newProducts);
-  //  })()
-  // }, []);
-
-  // useEffect(()=>{
-  //   if(user === null) {
-  //     router.push("/login");
-  //   }
-  // },[])
-  console.log(featuredProduct,"userhome");
 
   return (
     <div>
