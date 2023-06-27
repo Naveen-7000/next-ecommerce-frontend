@@ -44,7 +44,6 @@ const LoginPage = () => {
     setLoading(true);
     const data = {email,password};
     const res = await axios.post('/api/auth/login',data);
-    console.log(res.data,"login");
     setUser(res.data?.user);
     clearState();
     setLoading(false);

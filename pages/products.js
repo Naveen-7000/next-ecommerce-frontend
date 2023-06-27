@@ -6,7 +6,6 @@ import { mongooseConnect } from "@/lib/mongoose";
 import { Product } from "@/models/Product";
 
 export default function ProductsPage({products}) {
-  console.log(products,"product page");
   return (
     <>
       <Header />

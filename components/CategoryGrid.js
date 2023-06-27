@@ -16,8 +16,6 @@ const StyledCategoryGrid = styled.div`
 
 export default function CategoryGrid({category,products}) {
 
-  console.log(products,"products");
-
   const filteredProducts = products?.filter((product) => {
     return (
       product?.category === category ||

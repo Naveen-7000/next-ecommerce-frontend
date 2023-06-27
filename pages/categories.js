@@ -9,9 +9,6 @@ import { Category } from "@/models/Category";
 import { Product } from "@/models/Product";
 
 const Categories = ({category,commonProduct}) => {
-
-  console.log(category,"category",commonProduct,"commonProduct");
-
   return (
     <>
       <Header />
