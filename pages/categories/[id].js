@@ -66,35 +66,33 @@ const storageOption = [
   },
 
 ]
+  const router = useRouter();
+  const { id } = router.query;
 
-  const router  = useRouter();
-  const id = router?.query?.id;
-  const pathName = category?.filter(category=>category._id === id);
-  // const filteredProductsRef = useRef([]);
+  useEffect(() => {
+    const filterProducts = () => {
+      let filtered = products.filter((product) => {
+        return (
+          product.category === id ||
+          (product?.categoryData && product?.categoryData?.parent === id) ||
+          (product?.parentCategoryData && product?.parentCategoryData?._id === id)
+        );
+      });
 
-  const Products = products?.filter((product) => {
-    return (
-      product.category === id ||
-      (product?.categoryData && product?.categoryData?.parent === id) ||
-      (product?.parentCategoryData && product?.parentCategoryData?._id === id)
-      );
-    });
-
-
-    const filterProducts = (color, storage) => {
-      let filtered = Products;
-
-      if (color !== 'all') {
+      if (color !== "all") {
         filtered = filtered.filter((product) => product.properties?.Color === color);
       }
-      if (storage !== 'all') {
-        filtered = filtered.filter((product) => product.properties?.['Storage(GB)'] === storage);
+      if (storage !== "all") {
+        filtered = filtered.filter((product) => product.properties?.["Storage(GB)"] === storage);
       }
+
       setFilteredProducts(filtered);
     };
-    useEffect(()=>{
-     filterProducts(color,storage);
-    },[color,storage]);
+
+    filterProducts();
+  }, [id, color, storage, products]);
+
+  const pathName = category?.filter((category) => category._id === id);
 
 
 
