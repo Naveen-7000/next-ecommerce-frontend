@@ -1,5 +1,13 @@
 # Ecommerce Project
-This is an ecommerce project built with Next.js, MongoDB, and React. It provides a platform for selling and purchasing products online.
+This is an e-commerce project built with Next.js, MongoDB, and React. It provides a platform for selling and purchasing products online.
+You can find the Live Demo at - [https://next-ecommerce-frontend-neon.vercel.app/](https://shorturl.at/cezM8)
+User Details : 
+-username - navinbhusare97n@gmail.com
+-password - 8827846437Nb@
+
+
+<img width="817" alt="ecommerce" src="https://github.com/Naveen-7000/next-ecommerce-frontend/assets/79650422/23342631-1081-4283-ba39-9c99a62005ec">
+
 
 ## Features
 - User authentication (signup, login, logout)
@@ -26,7 +34,7 @@ To get a local copy of the project up and running, follow these steps:
 # Prerequisites
 - Node.js (v14 or above)
 - MongoDB database
-To install and run the Realtime Code Editor locally, follow these steps:
+To install and run the Ecommerce locally, follow these steps:
 1. Clone the repository: `git clone https://github.com/Naveen-7000/next-ecommerce-frontend`
 2. Navigate to the project directory: `cd next-ecommerce-frontend`
 3. Install dependencies: `npm install`
