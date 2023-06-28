@@ -27,6 +27,12 @@ const Box = styled.div`
   padding: 30px;
 `;
 
+const OrderBox = styled.div`
+  background-color: #fff;
+  border-radius: 10px;
+  padding: 30px;
+`;
+
 const ProductInfoCell = styled.td`
   padding: 10px 0;
 `;
@@ -230,8 +236,8 @@ export default function CartPage() {
               </Table>
             )}
           </Box>
-          {!!cartProducts?.length && (
-            <Box>
+          {!!cartProducts?.length  && (
+            <OrderBox>
               <h2>Order information</h2>
               <Input
                 type="text"
@@ -285,7 +291,7 @@ export default function CartPage() {
               <Button black="true" block="true" onClick={goToPayment}>
                 Continue to payment
               </Button>
-            </Box>
+            </OrderBox>
           )}
         </ColumnsWrapper>
       </Center>

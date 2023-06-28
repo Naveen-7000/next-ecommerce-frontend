@@ -27,6 +27,12 @@ const LoginPage = () => {
     setPassword('');
   }
 
+  const handleDummy = (e)=>{
+    e.preventDefault();
+    setEmail('navinbhusare97n@gmail.com');
+    setPassword('8827846437Nb@');
+  }
+
   const handleRegister = async(e) => {
     e.preventDefault();
     setLoading(true);
@@ -78,8 +84,9 @@ const LoginPage = () => {
             <Label>Password</Label>
             <Input type="password" value={password} onChange={(e)=>setPassword(e.target.value)} />
           </FormGroup>
+              <ButtonDummy  onClick={(e)=>handleDummy(e)}>Try Dummy ?</ButtonDummy>
           {
-            fieldsRequired && <p style={{color:"red", marginTop:-10}}>All fields are required</p>
+            fieldsRequired && <p style={{color:"red", marginTop:-5}}>All fields are required</p>
           }
           {
             loading ? <Button disabled>Loading...</Button> : <Button type="submit">Login</Button>
@@ -169,6 +176,17 @@ const Input = styled.input`
 
 const Button = styled.button`
   background-color: #222222;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  padding: 10px;
+  cursor: pointer;
+  margin-bottom:15px;
+`;
+
+const ButtonDummy = styled.button`
+  background-color: #222222;
+  width:100px ;
   color: white;
   border: none;
   border-radius: 6px;
