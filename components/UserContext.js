@@ -8,21 +8,22 @@ export const UserProvider = ({ children }) => {
   const [user, setUser] = useState(null);
 
   useEffect(() => {
-   if(user?.length > 0){
-    ls?.setItem('user', JSON.stringify(user));
-   }
-  },[user]);
+    if (user?.length > 0) {
+      ls?.setItem("user", JSON.stringify(user));
+    }
+  }, [user, ls]);
 
   useEffect(() => {
-    if (ls && ls.getItem('user')) {
-      setUser(JSON.parse(ls.getItem('user')));
+    if (ls && ls.getItem("user")) {
+      setUser(JSON.parse(ls.getItem("user")));
     }
-  }, []);
+  }, [ls]);
 
   const clearUser = () => {
+    ls?.removeItem("user");
     setUser(null);
   };
-
+  
   return (
     <UserContext.Provider value={{ user, setUser,clearUser }}>
       {children}
