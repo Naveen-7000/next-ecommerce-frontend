@@ -82,7 +82,7 @@ export default function AccountPage() {
       <Center>
         <Box>
           <h2>Account details</h2>
-          {!user && (
+          {/* {!user && (
             <>
               <p>Login first to access</p>
               <Button
@@ -93,7 +93,7 @@ export default function AccountPage() {
                 Login
               </Button>
             </>
-          )}
+          )} */}
           <Input
             type="text"
             placeholder="Name"
