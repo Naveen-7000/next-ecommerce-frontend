@@ -2,12 +2,23 @@ import styled from "styled-components";
 import Button from "@/components/Button";
 import CartIcon from "@/components/icons/CartIcon";
 import Link from "next/link";
-import {useContext} from "react";
+import {useContext, useEffect,useState} from "react";
 import {CartContext} from "@/components/CartContext";
 
 const ProductWrapper = styled.div`
   margin-bottom:10px ;
 `;
+
+const ProductImg = styled.img`
+transform:scale(1.2) ;
+background-blend-mode:color-burn ;
+`
+
+const ImageWrapper = styled.div`
+&:hover ${ProductImg}{
+  transition:0.3s ease-in-out ;
+  transform:scale(1.4);
+}`
 
 const WhiteBox = styled(Link)`
   background-color: #fff;
@@ -59,14 +70,20 @@ const Price = styled.div`
 `;
 
 export default function ProductBox({_id,title,description,price,images}) {
-  const {addProduct} = useContext(CartContext);
+  const {addProduct, cartProducts} = useContext(CartContext);
   const url = '/product/'+_id;
+  const [alreadyAdded, setAlreadyAdded] = useState(false);
+
+  useEffect(()=>{
+       const added = cartProducts.find(product => product === _id);
+       console.log(added,"_id",cartProducts,_id);
+  },[]);
   return (
     <ProductWrapper>
       <WhiteBox href={url}>
-        <div>
-          <img src={images?.[0]} alt="product image"/>
-        </div>
+        <ImageWrapper>
+          <ProductImg src={images?.[0]} alt="product image"/>
+        </ImageWrapper>
       </WhiteBox>
       <ProductInfoBox>
         <Title href={url}>{title.length > 21 ? title.slice(0,21) : title}</Title>
@@ -75,7 +92,10 @@ export default function ProductBox({_id,title,description,price,images}) {
            ₹{price}
           </Price>
           <Button block="true" onClick={() => addProduct(_id)} primary="true" outline="true">
-            Add to cart
+           {
+            cartProducts.includes(_id) ? "Check Cart" : "Add to cart"
+           }
+            {/* Add to cart */}
           </Button>
         </PriceRow>
       </ProductInfoBox>
