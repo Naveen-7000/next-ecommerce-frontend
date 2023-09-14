@@ -11,7 +11,6 @@ const ProductWrapper = styled.div`
 
 const ProductImg = styled.img`
 transform:scale(1.2) ;
-background-blend-mode:color-burn ;
 `
 
 const ImageWrapper = styled.div`
