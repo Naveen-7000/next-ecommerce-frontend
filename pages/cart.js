@@ -9,6 +9,7 @@ import Button from "@/components/Button";
 import Table from "@/components/Table";
 import Input from "@/components/Input";
 import { CartContext } from "@/components/CartContext";
+import UserContext from "@/components/UserContext";
 
 const ColumnsWrapper = styled.div`
   display: grid;
@@ -27,10 +28,19 @@ const Box = styled.div`
   padding: 30px;
 `;
 
+const LoginCard = styled.div`
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+`;
+
 const OrderBox = styled.div`
   background-color: #fff;
   border-radius: 10px;
   padding: 30px;
+  height: 300px;
 `;
 
 const ProductInfoCell = styled.td`
@@ -82,6 +92,8 @@ const CityHolder = styled.div`
 export default function CartPage() {
   const { cartProducts, addProduct, removeProduct, clearCart } =
     useContext(CartContext);
+  const { user, setUser } = useContext(UserContext);
+
   const [products, setProducts] = useState([]);
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
@@ -92,6 +104,23 @@ export default function CartPage() {
   const [isSuccess, setIsSuccess] = useState(false);
   const [fieldsRequired, setFieldsRequired] = useState(false);
   const router = useRouter();
+
+  useEffect(() => {
+    if (user) {
+      const {
+        name: existingName,
+        email: existingEmail,
+        address: existingAddress,
+      } = user;
+      setName(existingName || "");
+      setEmail(existingEmail || "");
+      setCity(existingAddress?.city || "");
+      setPostalCode(existingAddress?.pincode || "");
+      setCountry(existingAddress?.country || "");
+    }
+  }, [user]);
+
+  const isUserPresent = user === null ? false : true;
 
   useEffect(() => {
     if (cartProducts?.length > 0) {
@@ -241,59 +270,75 @@ export default function CartPage() {
           </Box>
           {!!cartProducts?.length && (
             <OrderBox>
-              <h2>Order information</h2>
-              <Input
-                type="text"
-                placeholder="Name"
-                value={name}
-                name="name"
-                onChange={(ev) => setName(ev.target.value)}
-              />
-              <Input
-                type="text"
-                placeholder="Email"
-                value={email}
-                name="email"
-                onChange={(ev) => setEmail(ev.target.value)}
-              />
-              <CityHolder>
-                <Input
-                  type="text"
-                  placeholder="City"
-                  value={city}
-                  name="city"
-                  onChange={(ev) => setCity(ev.target.value)}
-                />
-                <Input
-                  type="text"
-                  placeholder="Postal Code"
-                  value={postalCode}
-                  name="postalCode"
-                  onChange={(ev) => setPostalCode(ev.target.value)}
-                />
-              </CityHolder>
-              <Input
-                type="text"
-                placeholder="Street Address"
-                value={streetAddress}
-                name="streetAddress"
-                onChange={(ev) => setStreetAddress(ev.target.value)}
-              />
-              <Input
-                type="text"
-                placeholder="Country"
-                value={country}
-                name="country"
-                onChange={(ev) => setCountry(ev.target.value)}
-              />
-              {fieldsRequired && (
-                <p style={{ color: "red", fontSize: 14, fontWeight: 600 }}>
-                  Fill all the fields!
-                </p>
+              {!isUserPresent && (
+                <LoginCard>
+                  <p>Register yourself first!</p>
+                  <Button
+                    block="true"
+                    black="true"
+                    onClick={() => router.replace("/login")}
+                  >
+                    Login
+                  </Button>
+                </LoginCard>
               )}
-              <Button black="true" block="true" onClick={goToPayment}>
-                Continue to payment
-              </Button>
+              {isUserPresent && (
+                <>
+                  <h2>Order information</h2>
+                  <Input
+                    type="text"
+                    placeholder="Name"
+                    value={name}
+                    name="name"
+                    onChange={(ev) => setName(ev.target.value)}
+                  />
+                  <Input
+                    type="text"
+                    placeholder="Email"
+                    value={email}
+                    name="email"
+                    onChange={(ev) => setEmail(ev.target.value)}
+                  />
+                  <CityHolder>
+                    <Input
+                      type="text"
+                      placeholder="City"
+                      value={city}
+                      name="city"
+                      onChange={(ev) => setCity(ev.target.value)}
+                    />
+                    <Input
+                      type="text"
+                      placeholder="Postal Code"
+                      value={postalCode}
+                      name="postalCode"
+                      onChange={(ev) => setPostalCode(ev.target.value)}
+                    />
+                  </CityHolder>
+                  <Input
+                    type="text"
+                    placeholder="Street Address"
+                    value={streetAddress}
+                    name="streetAddress"
+                    onChange={(ev) => setStreetAddress(ev.target.value)}
+                  />
+                  <Input
+                    type="text"
+                    placeholder="Country"
+                    value={country}
+                    name="country"
+                    onChange={(ev) => setCountry(ev.target.value)}
+                  />
+                  {fieldsRequired && (
+                    <p style={{ color: "red", fontSize: 14, fontWeight: 600 }}>
+                      Fill all the fields!
+                    </p>
+                  )}
+                  <Button black="true" block="true" onClick={goToPayment}>
+                    Continue to payment
+                  </Button>
+                </>
+              )}
             </OrderBox>
           )}
         </ColumnsWrapper>

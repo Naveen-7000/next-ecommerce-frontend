@@ -30,6 +30,17 @@ export default function AccountPage() {
   const [country, setCountry] = useState("");
   const [fieldsRequired, setFieldsRequired] = useState(false);
 
+  
+  useEffect(() => {
+    const storedUser = localStorage.getItem("user");
+
+    if (storedUser) {
+      setUser(JSON.parse(storedUser));
+    }
+  }, []);
+
+  const isUserPresent = user === null ? false : true;
+
   useEffect(() => {
     if (user) {
       const {
@@ -59,7 +70,6 @@ export default function AccountPage() {
 
   const handleLogout = () => {
     clearUser();
-    router.push("/login");
   };
 
   const handleUpdateUser = async (e) => {
@@ -82,18 +92,21 @@ export default function AccountPage() {
       <Center>
         <Box>
           <h2>Account details</h2>
-          {/* {!user && (
+          {!isUserPresent && (
             <>
               <p>Login first to access</p>
               <Button
                 block="true"
                 black="true"
-                onClick={() => router.push("/login")}
+                onClick={() => router.replace("/login")}
               >
                 Login
               </Button>
             </>
-          )} */}
+          )}
+          {
+            isUserPresent && (
+          <>
           <Input
             type="text"
             placeholder="Name"
@@ -151,6 +164,8 @@ export default function AccountPage() {
           <Button green="true" onClick={handleLogout}>
             Logout
           </Button>
+          </>
+           )}
         </Box>
       </Center>
     </>
