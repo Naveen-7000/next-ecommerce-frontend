@@ -140,7 +140,8 @@ const Container = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-`;
+  padding: 0 20px;
+  `;
 
 const FormContainer = styled.div`
   background-color: white;

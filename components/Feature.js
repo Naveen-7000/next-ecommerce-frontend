@@ -5,7 +5,7 @@ import ButtonLink from "@/components/ButtonLink";
 import CartIcon from "@/components/icons/CartIcon";
 import {useContext} from "react";
 import {CartContext} from "@/components/CartContext";
-
+import Image from "next/image";
 const Bg = styled.div`
   background-color: #222;
   color:#fff;
@@ -79,7 +79,7 @@ export default function Feature({product}) {
             </div>
           </Column>
           <Column>
-            <img src="https://dawid-next-ecommerce.s3.amazonaws.com/1679151719649.png" alt=""/>
+            <Image src="https://dawid-next-ecommerce.s3.amazonaws.com/1679151719649.png" alt="featured-product" width={342} height={189.8}/>
           </Column>
         </ColumnsWrapper>
       </Center>

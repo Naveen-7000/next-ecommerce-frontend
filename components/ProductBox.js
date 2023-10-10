@@ -75,7 +75,6 @@ export default function ProductBox({_id,title,description,price,images}) {
 
   useEffect(()=>{
        const added = cartProducts.find(product => product === _id);
-       console.log(added,"_id",cartProducts,_id);
   },[]);
   return (
     <ProductWrapper>
@@ -85,7 +84,7 @@ export default function ProductBox({_id,title,description,price,images}) {
         </ImageWrapper>
       </WhiteBox>
       <ProductInfoBox>
-        <Title href={url}>{title.length > 21 ? title.slice(0,21) : title}</Title>
+        <Title href={url}>{title.length > 15 ? `${title.slice(0,15)} . . .` : title}</Title>
         <PriceRow>
           <Price>
            ₹{price}

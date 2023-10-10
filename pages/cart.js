@@ -15,7 +15,7 @@ const ColumnsWrapper = styled.div`
   grid-template-columns: 1fr;
   gap: 40px;
   margin-top: 40px;
-  
+
   @media screen and (min-width: 768px) {
     grid-template-columns: 1.2fr 0.8fr;
   }
@@ -51,12 +51,12 @@ const ProductImageBox = styled.div`
     max-width: 60px;
     max-height: 60px;
   }
-  
+
   @media screen and (min-width: 768px) {
     padding: 10px;
     width: 100px;
     height: 100px;
-    
+
     img {
       max-width: 80px;
       max-height: 80px;
@@ -67,7 +67,7 @@ const ProductImageBox = styled.div`
 const QuantityLabel = styled.span`
   padding: 0 15px;
   display: block;
-  
+
   @media screen and (min-width: 768px) {
     display: inline-block;
     padding: 0 10px;
@@ -80,7 +80,8 @@ const CityHolder = styled.div`
 `;
 
 export default function CartPage() {
-  const { cartProducts, addProduct, removeProduct, clearCart } = useContext(CartContext);
+  const { cartProducts, addProduct, removeProduct, clearCart } =
+    useContext(CartContext);
   const [products, setProducts] = useState([]);
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
@@ -92,10 +93,10 @@ export default function CartPage() {
   const [fieldsRequired, setFieldsRequired] = useState(false);
   const router = useRouter();
 
-
   useEffect(() => {
     if (cartProducts?.length > 0) {
-      axios.post("/api/cart", { ids: cartProducts })
+      axios
+        .post("/api/cart", { ids: cartProducts })
         .then((response) => {
           setProducts(response.data);
         })
@@ -141,7 +142,7 @@ export default function CartPage() {
         country,
         cartProducts,
       });
-      
+
       if (response.data.url) {
         window.location = response.data.url;
       }
@@ -152,12 +153,12 @@ export default function CartPage() {
 
   const calculateTotalPrice = () => {
     let total = 0;
-    
+
     for (const productId of cartProducts) {
       const price = products.find((p) => p._id === productId)?.price || 0;
       total += price;
     }
-    
+
     return total;
   };
 
@@ -174,9 +175,7 @@ export default function CartPage() {
             <Box>
               <h1>Thanks for your order!</h1>
               <p>We will email you when your order will be sent.</p>
-              <Button onClick={handleRedirect}>
-                Go back to home page
-              </Button>
+              <Button onClick={handleRedirect}>Go back to home page</Button>
             </Box>
           </ColumnsWrapper>
         </Center>
@@ -215,7 +214,10 @@ export default function CartPage() {
                           -
                         </Button>
                         <QuantityLabel>
-                          {cartProducts.filter((id) => id === product._id).length}
+                          {
+                            cartProducts.filter((id) => id === product._id)
+                              .length
+                          }
                         </QuantityLabel>
                         <Button onClick={() => moreOfThisProduct(product._id)}>
                           +
@@ -223,7 +225,8 @@ export default function CartPage() {
                       </td>
                       <td>
                         ₹
-                        {cartProducts.filter((id) => id === product._id).length * product.price}
+                        {cartProducts.filter((id) => id === product._id)
+                          .length * product.price}
                       </td>
                     </tr>
                   ))}
@@ -236,7 +239,7 @@ export default function CartPage() {
               </Table>
             )}
           </Box>
-          {!!cartProducts?.length  && (
+          {!!cartProducts?.length && (
             <OrderBox>
               <h2>Order information</h2>
               <Input
